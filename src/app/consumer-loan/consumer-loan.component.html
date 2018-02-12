@@ -1,0 +1,25 @@
+<div class="container inner-container text-center">
+  <app-form-wizard class="row w-100">
+    <div id="formMessages" class="col-md-12"></div>
+    <!-- Steps -->
+    <app-wizard-step *ngFor="" class="col-md-12 step-container" [title]="'Application'" [showPrev]="false" (onNext)="onApplicationNext($event)">
+      <app-application-form></app-application-form>
+    </app-wizard-step>
+
+    <app-wizard-step class="col-md-12" [title]="'Personal data of applicant'" (onNext)="onPersonalDataNext($event)">
+      <h1>Personal data of applicant</h1>
+    </app-wizard-step>
+
+    <app-wizard-step class="col-md-12" [title]="'Obligations'" (onNext)="onObligationsNext($event)">
+      <h1>Obligations</h1>
+    </app-wizard-step>
+
+    <app-wizard-step class="col-md-12" [title]="'Income'" (onNext)="onIncomeNext($event)">
+      <h1>Income</h1>
+    </app-wizard-step>
+
+    <app-wizard-step class="col-md-12" [title]="'Send application'" (onComplete)="onComplete($event)">
+      <h1>Send application</h1>
+    </app-wizard-step>
+  </app-form-wizard>
+</div>

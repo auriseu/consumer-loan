@@ -1,0 +1,7 @@
+form-wizard .card-footer {
+   background: inherit !important;
+ }
+
+.nav-item .active .enabled {
+  border-bottom-color: #f58322 !important;
+}

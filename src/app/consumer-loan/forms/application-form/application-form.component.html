@@ -1,0 +1,177 @@
+<!-- Credit type -->
+<div class="row form-row">
+  <div class="col-sm-4 col-sm-offset-2 text-right">Credit type
+    <span><em>*</em></span>
+  </div>
+
+  <div class="col-sm-4 text-left">
+    <select id="creditUseType" class="form-input" onchange="javascript:showCreditUseTypeMessage();">
+      <option id=""></option>
+      <option value="personal_credit">Personal credit</option>
+      <option value="family_credit">Family/household credit</option>
+    </select>
+  </div>
+</div>
+
+<!-- Loan amount -->
+<div class="row form-row">
+  <div id="loanAmount" class="col-sm-4 col-sm-offset-2 text-right">Loan amount
+    <span><em>*</em></span>
+  </div>
+
+  <div class="col-sm-4 text-left">
+    <input class="form-input" id="limit" maxlength="10" name="limit" size="7" type="text" value="">
+    <span class="units-inline no-margin-padding-left">EUR</span>
+  </div>
+  <input id="currency" name="currency" type="hidden" value="EUR">
+</div>
+
+<!-- Loan term -->
+<div class="row form-row">
+  <div class="col-sm-4 col-sm-offset-2 text-right">Loan term
+    <span><em>*</em></span>
+  </div>
+
+  <div class="col-sm-4 text-left">
+    <select id="loanPeriodYear" class="form-input" onchange="javascript:checkMaxPeriod();">
+      <option id=""></option>
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <span class="units-inline no-margin-padding-left">years</span>
+
+    <select id="loanPeriodMonth" class="form-input">
+      <option id=""></option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+    </select>
+    <span class="units-inline no-margin-padding-left">months</span>
+  </div>
+</div>
+
+<!-- Loan repayment method -->
+<div class="row form-row">
+  <div class="col-sm-4 col-sm-offset-2 text-right">Day of repayment of principal and payment of interest
+    <span><em>*</em></span>
+  </div>
+
+  <div class="col-sm-4 text-left">
+    <select id="paymentDay" class="form-input" >
+      <option id=""></option>
+      <option value="3">3</option>
+      <option value="7">7</option>
+      <option value="12">12</option>
+      <option value="17">17</option>
+      <option value="22">22</option>
+      <option value="27">27</option>
+    </select>
+  </div>
+</div>
+
+<!-- Loan repayment method -->
+<div class="row form-row">
+  <div class="col-sm-4 col-sm-offset-2 text-right">Discount code
+  </div>
+
+  <div class="col-sm-4 text-left">
+    <input id="campaignCode" class="form-input" maxlength="25" name="campaignCode" size="7" type="text" value="">
+  </div>
+</div>
+
+<!--
+<script>
+  var originalValidMonths = null;     // use this to keep a copy of the combo before removing items
+  var minMonth = 6;
+
+  function checkMaxPeriod() {
+    var loanYear = document.mainForm.loanPeriodYear;
+    var loanMonth = document.mainForm.loanPeriodMonth;
+
+    var selectedYearIndex = loanYear.selectedIndex;
+
+    if (loanYear.options[selectedYearIndex].value == '0' || loanYear.options[selectedYearIndex].value == '') {
+      // we have chosen 0, remove months less than the minimum months value
+      var removedMonths = removeInvalidMonths(loanMonth);
+      if (originalValidMonths == null) {
+        originalValidMonths = removedMonths;
+      }
+    }
+    else {
+      // we have choosen a year value other than 0
+      if (originalValidMonths != null) {
+        // we had previously chosen 0, so we need to restore the month values
+        originalValidMonths = restoreMonths(loanMonth, originalValidMonths);
+      }
+    }
+
+    // if the selected year is the max, then disable the months and set the value to zero.
+    if (loanYear.length != selectedYearIndex + 1) {
+      loanMonth.disabled = false;
+    }
+    else {
+      loanMonth.selectedIndex = 1;
+      loanMonth.disabled = true;
+    }
+  }
+
+  function removeInvalidMonths(loanMonth) {
+    var backupMonths = [];
+
+    // we count backwards to that we dont break the indexes, ie removing [3] shifts all indexes above down by one
+    for (var i = loanMonth.length - 1; i >= 0; i&#45;&#45;) {
+      var iText = loanMonth.options[i].text;
+      var iValue = loanMonth.options[i].value;
+      // keep a copy so we can restore the combo to all its original glory
+      backupMonths[i] = [iText, iValue];
+      // remove numbers which are less than the minimum month
+      if (Number(iText) != NaN) {
+        if (parseInt(iText) < minMonth) {
+          loanMonth.remove(i);
+        }
+      }
+    }
+    return backupMonths;
+  }
+
+  function restoreMonths(loanMonth, backupMonths) {
+    // then we should restore the months combobox
+    loanMonth.options.length = 0;
+    for (var i = 0; i < backupMonths.length; i++) {
+      var iText = backupMonths[i][0];
+      var iValue = backupMonths[i][1];
+      addOption(loanMonth, iText, iValue);
+    }
+    loanMonth.selectedIndex = 0;
+    backupMonths = null; // reset
+    return backupMonths;
+  }
+
+  function addOption(selectbox, text, value) {
+    var optn = document.createElement("OPTION");
+    optn.text = text;
+    optn.value = value;
+
+    selectbox.options.add(optn);
+  }
+
+  function showLoanPurposeText(loanPurposeValue) {
+    if (loanPurposeValue == 'other') {
+      jQuery('#loanPurposeText').show();
+    }
+    else {
+      jQuery('#loanPurposeText').hide();
+    }
+  }
+
+
+  checkMaxPeriod();
+  showLoanPurposeText(jQuery('#loanPurpose').val());
+</script>-->
